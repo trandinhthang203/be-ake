@@ -1,10 +1,9 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
-from db.base_db import Base
+from models.base_model import BaseModel
 
-class Users(Base):
+class Users(BaseModel):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False, unique=True)  # bắt buộc và duy nhất
     password = Column(String, nullable=False)
     email = Column(String)
