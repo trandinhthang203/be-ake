@@ -1,15 +1,39 @@
 from typing import Generic, Optional, TypeVar
 from pydantic.generics import GenericModel
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
+from datetime import datetime
 
-class Login(BaseModel):
+
+class UserBase(BaseModel):
+    username: str
+    email: EmailStr
+    full_name: str
+    avatar_url: Optional[str] = None
+    data_of_birth: Optional[datetime] = None
+
+class UserCreate(UserBase):
+    password: str = Field(..., min_length=6)
+
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    username: Optional[str] = None
+    full_name: Optional[str] = None
+    password: Optional[str] = None
+    avatar_url: Optional[bool] = None
+    data_of_birth: Optional[datetime] = None
+
+class UserRespone(UserBase):
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class UserLogin(BaseModel):
     username: str
     password: str
 
-class signin(BaseModel):
-    username = str
-    password = str
-    email = str
-    full_name = str
-    avatar_url = str
-    date_of_birth = str
+class Token(BaseModel):
+    access_token: str
+    token_type: str = 'bearer'
+
